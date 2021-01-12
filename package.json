@@ -1,0 +1,68 @@
+{
+    "name": "changestream-iterator",
+    "version": "0.1.0",
+    "main": "lib/index.cjs.js",
+    "module": "lib/index.esm.js",
+    "repository": "https://github.com/LukeSmetham/changestream-iterator.git",
+    "author": "Luke Smetham <luke@smetham.dev>",
+    "license": "MIT",
+    "scripts": {
+        "build:run": "npx rollup -c",
+        "build:watch": "npx rollup -c -w",
+        "build:clean": "rm -rf lib",
+        "lint": "eslint --fix",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.12.10",
+        "@babel/core": "^7.12.10",
+        "@babel/node": "^7.12.10",
+        "@babel/plugin-proposal-async-generator-functions": "^7.12.12",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-transform-runtime": "^7.12.10",
+        "@babel/preset-env": "^7.12.11",
+        "@babel/register": "^7.12.10",
+        "@babel/runtime": "^7.12.5",
+        "@rollup/plugin-babel": "^5.2.2",
+        "@rollup/plugin-commonjs": "^17.0.0",
+        "@rollup/plugin-node-resolve": "^11.0.1",
+        "babel-eslint": "^10.1.0",
+        "babel-jest": "^26.6.3",
+        "babel-plugin-inline-dotenv": "^1.6.0",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "babel-plugin-transform-optional-chaining": "^7.0.0-beta.3",
+        "builtin-modules": "^3.2.0",
+        "eslint": "^7.17.0",
+        "eslint-config-get-off-my-lawn": "^5.0.1",
+        "eslint-plugin-babel": "^5.3.1",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "graphql-tools": "^7.0.2",
+        "husky": "^4.3.6",
+        "jest": "^26.6.3",
+        "jest-express": "^1.12.0",
+        "jest-haste-map": "^26.6.2",
+        "jest-resolve": "^26.6.2",
+        "lerna": "3.22.1",
+        "lint-staged": "^10.5.3",
+        "prettier": "^2.2.1",
+        "rollup-plugin-node-builtins": "^2.1.2",
+        "rollup-plugin-node-globals": "^1.4.0",
+        "rollup-plugin-peer-deps-external": "^2.2.4"
+    },
+    "eslintConfig": {
+        "extends": ".eslintrc.js"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,json,md,yml}": [
+            "prettier --write",
+            "yarn lint"
+        ]
+    }
+}

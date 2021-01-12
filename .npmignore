@@ -1,0 +1,8 @@
+example
+.prettierrc.js
+.prettierignore
+.eslintignore
+.eslintrc.js
+jsconfig.json
+*.config.js
+.jest-*

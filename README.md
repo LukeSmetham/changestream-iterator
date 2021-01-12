@@ -1,6 +1,6 @@
 # ChangeStreamIterator
 
-Super simplate wrapper around Mongoose Change Streams to produce an ES6 AsyncIterator that will wait for events.
+Super simple wrapper around Mongoose Change Streams to produce an ES6 AsyncIterator that will wait for events.
 
 This allows you to use the iterator standalone in any supported environment, or pass to Apollo to create realtime graphql subscriptions based on a Change Stream.
 

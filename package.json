@@ -64,5 +64,8 @@
             "prettier --write",
             "yarn lint"
         ]
+    },
+    "peerDependencies": {
+        "mongoose": "^5.11.11"
     }
 }

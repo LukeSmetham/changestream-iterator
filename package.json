@@ -10,6 +10,7 @@
         "build:run": "npx rollup -c",
         "build:watch": "npx rollup -c -w",
         "build:clean": "rm -rf lib",
+        "deploy": "yarn build:clean && yarn build:run && yarn publish",
         "lint": "eslint --fix",
         "test": "jest"
     },

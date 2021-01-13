@@ -5,8 +5,8 @@ export class ChangeStreamIterator {
 
     done = false;
 
-    constructor(model) {
-        this.changeStream = model.watch();
+    constructor(model, pipeline = [], options = { fullDocment: 'updateLookup' }) {
+        this.changeStream = model.watch(pipeline, options);
         this.pullQueue = [];
         this.pushQueue = [];
         this.listening = true;

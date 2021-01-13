@@ -5,29 +5,30 @@ export class ChangeStreamIterator {
 
     done = false;
 
-    constructor(model, pipeline = [], options = { fullDocment: 'updateLookup' }) {
-        this.changeStream = model.watch(pipeline, options);
+    constructor(changeStream) {
         this.pullQueue = [];
         this.pushQueue = [];
         this.listening = true;
 
-        this.subscription = this.subscribe();
+        this.changeStreams = Array.isArray(changeStream) ? changeStream : [changeStream];
+
+        this.subscriptions = this.subscribeAll();
     }
 
     async next() {
-        await this.subscription;
+        await this.subscriptions;
 
         return this.listening ? this.pullValue() : this.return();
     }
 
     async throw(error) {
-        this.emptyQueue(await this.subscription);
+        this.emptyQueue(await this.subscriptions);
 
         return Promise.reject(error);
     }
 
     async return() {
-        this.emptyQueue(await this.subscription);
+        this.emptyQueue(await this.subscriptions);
 
         return {
             done: true,
@@ -38,7 +39,7 @@ export class ChangeStreamIterator {
     [Symbol.asyncIterator] = () => this;
 
     pushValue = async event => {
-        await this.subscription;
+        await this.subscriptions;
 
         if (this.pullQueue.length !== 0) {
             const element = this.pullQueue.shift();
@@ -66,10 +67,10 @@ export class ChangeStreamIterator {
             }
         });
 
-    emptyQueue = subscriptionIds => {
+    emptyQueue = subscriptions => {
         if (this.listening) {
             this.listening = false;
-            this.unsubscribe(subscriptionIds);
+            this.unsubscribeAll(subscriptions);
             this.pullQueue.forEach(resolve =>
                 resolve({
                     done: true,
@@ -81,9 +82,11 @@ export class ChangeStreamIterator {
         }
     };
 
-    subscribe = () => this.changeStream.on('change', this.pushValue.bind(this));
+    subscribeAll = () => Promise.all(this.changeStreams.map(stream => stream.on('change', this.pushValue.bind(this))));
 
-    unsubscribe = () => {
-        this.changeStream.close();
+    unsubscribeAll = subscriptions => {
+        for (const subscription of subscriptions) {
+            subscription.close();
+        }
     };
 }

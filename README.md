@@ -2,18 +2,20 @@
 
 Super simple wrapper around Mongoose Change Streams to produce an ES6 AsyncIterator that will wait for events.
 
-This allows you to use the iterator standalone in any supported environment, or pass to Apollo to create realtime graphql subscriptions based on a Change Stream.
+This allows you to use the iterator standalone in any supported environment, or pass to Apollo as the subscriber method of a Subscription resolver to create realtime graphql subscriptions for your MongoDB documents.
 
-`pseudo-code example`:
 
 ```js
-import { UserModel } from './models';
+import { ChangeStreamIterator } from 'changestream-iterator';
+import db from './db';
 
-const changeStream = new ChangeStreamIterator(UserModel);
+
+const userChangeIterator = db.collection('users').watch(undefined, { fullDocument: 'updateLookup' });
+const changeStream = new ChangeStreamIterator([userChangeIterator]);
+
 
 for await (const event of changeStream) {
-    console.log('User model event:', event);
+    console.log('CHANGE:', event);
+
 }
 ```
-
-> WIP: Currently has no way to configure the change stream/pipeline etc. Just purely creates an asynchronously iterable Mongoose Change Stream for a given collection.
